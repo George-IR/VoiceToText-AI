@@ -4,15 +4,15 @@ import multiprocessing
 import csv
 import re
 
-whisper_exe =   location
-audio_file =    location
-model =         location
+WHISPER_EXE     = r"WhisperRelease\whisper-cli.exe"
+AUDIO_FOLDER    = r"Audio/jfk.mp3"
+MODEL           = r"WhisperRelease\Model\ggml-base.en.bin"
 
 # Detect maximum number of threads available
 max_threads = multiprocessing.cpu_count()
 
 # Define thread counts to test (adjust as needed)
-thread_options = [2, 4, 6, 8, 10 ,max_threads)
+thread_options = [2, 4, 6, 8, 10 ,max_threads]
 results = []
 
 print("Benchmarking Whisper with different thread counts...")
@@ -24,7 +24,7 @@ for threads in thread_options:
     #print(whisper_exe, "-f", audio_file, "-t", str(threads), "-p", "4", "-m", model)
     # Run Whisper CLI with selected thread count
     process = subprocess.run(
-        [whisper_exe, "-f", audio_file, "-t", str(threads), "-p", "4", "-m", model],
+        [WHISPER_EXE, "-f", AUDIO_FOLDER, "-t", str(threads), "-p", "4", "-m", MODEL],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True
@@ -54,7 +54,7 @@ for threads in thread_options:
     results.append({"Threads": threads, "ScriptTime": elapsed, "WhisperTime": whisper_time, "Error": error})
 
 # Save results to CSV
-csv_filename = f"whisper_benchmark_results_{audio_file.split('/')[1]}.csv"
+csv_filename = f"whisper_benchmark_results_{AUDIO_FOLDER.split('/')[1]}.csv"
 with open(csv_filename, "w", newline="") as csvfile:
     fieldnames = ["Threads", "ScriptTime", "WhisperTime", "Error"]
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)

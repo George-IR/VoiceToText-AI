@@ -161,3 +161,4 @@ cython_debug/
 /Audio
 /.vs
 *.csv
+/WhisperRelease/Model/ggml-base.en.bin
